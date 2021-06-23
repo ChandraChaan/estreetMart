@@ -391,7 +391,7 @@ class _OtpPopUpState extends State<OtpPopUp> {
                                               genarateOTP = true;
                                               notp = rNum.toString();
                                             });
-                                            print('this is otp ' + '${notp}');
+                                            // print('this is otp ' + '${notp}');
                                           },
                                           child: Text('Verify email'),
                                           color: Colors.blue,
@@ -430,7 +430,7 @@ class _OtpPopUpState extends State<OtpPopUp> {
                                     content: Text('Please enter valid OTP'),
                                   ));
                                 } else if (notp == otpcontro.text) {
-                                  print(widget.checkOutlist.length);
+                                  // print(widget.checkOutlist.length);
                                   // showDialog(
                                   //   barrierDismissible: false,
                                   //   context: context,

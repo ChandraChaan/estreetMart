@@ -85,7 +85,7 @@ class paynowWidget extends StatelessWidget {
                               borderSide: BorderSide(
                                   color: Colors.blueAccent, width: 1),
                               onPressed: () {
-                                print('ready to pay');
+                                // print('ready to pay');
                               },
                             ),
                           )
@@ -170,7 +170,7 @@ class paynowWidget extends StatelessWidget {
                               borderSide: BorderSide(
                                   color: Colors.blueAccent, width: 1),
                               onPressed: () {
-                                print('ready to pay');
+                                // print('ready to pay');
                               },
                             ),
                           )

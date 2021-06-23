@@ -6,13 +6,8 @@ import 'models.dart';
 
 class HttpserviceC {
   Future<List<bannerModel>> getbannersdata() async {
-    print('Network layer arrived');
     var url = Uri.parse('https://api.estreetmart.sg/api/store/category/');
-    print(url);
-    print('just entered to hit URL');
     final res = await http.get(url);
-    print('done hitting url');
-    print(res.statusCode);
     if (res.statusCode == 200) {
       print('Good');
     } else {
@@ -28,7 +23,6 @@ class HttpserviceC {
       String address,
       int otp}
       /*postUserotpdataModel dataModel*/) async {
-    print('Network layer arrived');
     var url = Uri.parse('https://api.estreetmart.sg/orders/');
     var body = {
       'name': '${name}',
@@ -43,14 +37,9 @@ class HttpserviceC {
       /*dataModel.address,*/
       'otp': '${otp}', /*dataModel.otp*/
     };
-    print(url);
-    print('just entered to hit URL');
     final res = await http.post(url, body: body);
-    print('done hitting url');
-    print(res.statusCode);
     if (res.statusCode == 200 || res.statusCode == 201) {
       print('Good');
-      print(res.body);
     } else {
       print('Bad');
     }

@@ -13,36 +13,35 @@ class BannerSlider extends StatefulWidget {
 class _BannerSliderState extends State<BannerSlider> {
 
   List<bannerModel> parseBanners = [];
-
+int i;
   Future<List<bannerModel>> getbannersdata() async {
-    print('trying to get banner data');
     var url = Uri.parse('https://api.estreetmart.sg/banners/');
-    print(url);
-    print('just entered to hit URL');
     final res = await http.get(url);
-    print('done hitting url');
-    print(res.statusCode);
     if (res.statusCode == 200) {
-      print('Good');
-      print(res.body);
       final parsed = json.decode(res.body).cast<Map<String, dynamic>>();
       parseBanners = parsed.map<bannerModel>((json) =>bannerModel.fromJson(json)).toList();
+      i=1;
+      setState(() {
+
+      });
       return parsed.map<bannerModel>((json) =>bannerModel.fromJson(json)).toList();
     } else {
-      print('Bad');
+      i =2;
+      return parseBanners;
     }
   }
 
   @override
   void initState() {
     super.initState();
+    i=0;
     getbannersdata();
   }
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      child: CarouselSlider(
+      child: i==0? Center(child: CircularProgressIndicator()) : i == 1 ?CarouselSlider(
         items: [
           for (var i = 0; i < parseBanners.length; i++)
             Container(
@@ -59,7 +58,7 @@ class _BannerSliderState extends State<BannerSlider> {
 
         //Slider Container properties
         options: CarouselOptions(
-          height: 280.0,
+          height: 320.0,
           enlargeCenterPage: true,
           autoPlay: true,
           aspectRatio: 16 / 9,
@@ -68,7 +67,7 @@ class _BannerSliderState extends State<BannerSlider> {
           autoPlayAnimationDuration: Duration(milliseconds: 800),
           viewportFraction: 0.8,
         ),
-      ),
+      ): Text('Something went rong do refresh'),
     );
   }
 }

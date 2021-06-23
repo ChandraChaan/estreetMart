@@ -17,26 +17,22 @@ class cardItems extends StatefulWidget {
 
 class _cardItemsState extends State<cardItems> {
   List<cardItemsList> selectedList = [];
-
+int i;
   Future<List<cardItemsList>> getListItemsdata() async {
-    print('trying to get banner data');
     var url = Uri.parse('https://api.estreetmart.sg/products/?category='+'${widget.slug}');
-    print(url);
-    print('just entered to hit URL');
     final res = await http.get(url);
-    print('done hitting url');
-    print(res.statusCode);
     if (res.statusCode == 200) {
-      print('Good');
-      print(res.body);
       final parsed = json.decode(res.body).cast<Map<String, dynamic>>();
       selectedList = parsed.map<cardItemsList>((json) =>cardItemsList.fromJson(json)).toList();
-      print('this is for testing');
-      print(selectedList.length);
+      i=1;
+      setState(() {
+
+      });
+      // print(selectedList.length);
       return parsed.map<cardItemsList>((json) =>cardItemsList.fromJson(json)).toList();
     } else {
-      print('Bad');
-      return selectedList = [];
+      i=2;
+      return selectedList;
     }
   }
 
@@ -44,13 +40,12 @@ class _cardItemsState extends State<cardItems> {
   @override
   void initState() {
     super.initState();
+    i=0;
     getListItemsdata();
   }
 
   @override
   Widget build(BuildContext context) {
-    getListItemsdata();
-    print(selectedList.length);
     var size = MediaQuery.of(context).size;
     final double cardHeight = 570;
     return Padding(
@@ -80,7 +75,7 @@ class _cardItemsState extends State<cardItems> {
               Expanded(
                 // height: 364,
                 // color: Colors.blueGrey,
-                child: GridView.count(
+                child: i==0?Center(child: CircularProgressIndicator()): i==1? GridView.count(
                   crossAxisCount: size.width < 850 ? 1 : 3,
                   childAspectRatio: 1.2,
                   padding: size.width < 850
@@ -203,7 +198,7 @@ class _cardItemsState extends State<cardItems> {
                         ),
                       ),
                   ],
-                ),
+                ) : Text('error occured'),
               ),
               SizedBox(
                 height: 20,
@@ -219,7 +214,7 @@ class _cardItemsState extends State<cardItems> {
                             checkOutlist: selectedList,
                           ),
                         );
-                        print('count' + '${selectedList.length}');
+                        // print('count' + '${selectedList.length}');
                       },
                       child: Text('Proceed')))
             ],

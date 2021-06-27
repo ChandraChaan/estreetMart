@@ -1,21 +1,35 @@
 import 'dart:math';
 import 'package:estreet/network/models.dart';
 import 'package:estreet/network/network_file.dart';
+import 'package:estreet/payment/strip-payment-service.dart';
+import 'package:estreet/payment/stripMain.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-class CheckOutDilog extends StatelessWidget {
+class CheckOutDilog extends StatefulWidget {
   final List<cardItemsList> checkOutlist;
 
   CheckOutDilog({Key key, this.checkOutlist}) : super(key: key);
 
+  @override
+  _CheckOutDilogState createState() => _CheckOutDilogState();
+}
+
+class _CheckOutDilogState extends State<CheckOutDilog> {
   final mainRow = TextStyle(fontWeight: FontWeight.bold);
-  int total = 0;
+
+  double total = 0;
+
+  @override
+  void initState() {
+    super.initState();
+    StripeService.init();
+  }
 
   @override
   Widget build(BuildContext context) {
-    for (var i = 0; i < checkOutlist.length; i++)
-      total = total + int.parse(checkOutlist[i].price);
+    for (var i = 0; i < widget.checkOutlist.length; i++)
+      total = total + double.parse(widget.checkOutlist[i].price);
     return Center(
       child: Material(
         color: Colors.transparent,
@@ -96,7 +110,7 @@ class CheckOutDilog extends StatelessWidget {
                           child: ListView.builder(
                               scrollDirection: Axis.vertical,
                               shrinkWrap: true,
-                              itemCount: checkOutlist.length,
+                              itemCount: widget.checkOutlist.length,
                               itemBuilder: (BuildContext context, int i) {
                                 return Row(
                                   children: [
@@ -110,17 +124,20 @@ class CheckOutDilog extends StatelessWidget {
                                             MediaQuery.of(context).size.width /
                                                 12,
                                         child: new Image.network(
-                                            '${checkOutlist[i].image}'
-                                                .toString()),
+                                            'https://api.estreetmart.sg' +
+                                                '${widget.checkOutlist[i].image}'
+                                                    .toString()),
                                       ),
                                     ),
                                     Expanded(
                                       flex: 1,
-                                      child: Text('${checkOutlist[i].title}'),
+                                      child: Text(
+                                          '${widget.checkOutlist[i].title}'),
                                     ),
                                     Expanded(
                                       flex: 1,
-                                      child: Text('${checkOutlist[i].price}'),
+                                      child: Text(
+                                          '${widget.checkOutlist[i].price}'),
                                     ),
                                     Expanded(
                                       flex: 1,
@@ -155,6 +172,35 @@ class CheckOutDilog extends StatelessWidget {
                               Expanded(
                                 flex: 1,
                                 child: Container(),
+                              ),
+                            ],
+                          ),
+                        ),
+                        Expanded(
+                          flex: 3,
+                          child: Row(
+                            children: [
+                              Expanded(
+                                flex: 1,
+                                child: Text(""),
+                              ),
+                              Expanded(
+                                flex: 1,
+                                child: Container(),
+                              ),
+                              Expanded(
+                                flex: 1,
+                                child: Text(""),
+                              ),
+                              Expanded(
+                                flex: 1,
+                                child: TextButton(
+                                    onPressed: () {
+                                      print('proceed to pay');
+                                      payMentStrip().payViaNewCard(
+                                          context, "${total.toString()}");
+                                    },
+                                    child: Text("Proceed to pay")),
                               ),
                             ],
                           ),
@@ -244,7 +290,7 @@ class infoPopup extends StatelessWidget {
 }
 
 class OtpPopUp extends StatefulWidget {
-  final List<cardItemsList> checkOutlist;
+  List<cardItemsList> checkOutlist;
 
   OtpPopUp({Key key, this.checkOutlist}) : super(key: key);
 
@@ -262,6 +308,37 @@ class _OtpPopUpState extends State<OtpPopUp> {
   final addresscontro = TextEditingController(text: '');
   final otpcontro = TextEditingController(text: '');
   final namecontro = TextEditingController(text: '');
+  String deliverydate = 'Choose delivery date here';
+  String deliverytime = ' and choose time';
+
+  Future<void> _deliveryselectDate(BuildContext context) async {
+    final DateTime picked = await showDatePicker(
+        context: context,
+        initialDate: DateTime.now(),
+        firstDate: DateTime(2015, 8),
+        lastDate: DateTime(2201));
+    if (picked != null)
+      setState(() {
+        deliverydate = picked.toString();
+      });
+  }
+
+  Future<void> _selectTime(BuildContext context) async {
+    final TimeOfDay picked_s = await showTimePicker(
+        context: context,
+        initialTime: TimeOfDay.now(),
+        builder: (BuildContext context, Widget child) {
+          return MediaQuery(
+            data: MediaQuery.of(context).copyWith(alwaysUse24HourFormat: false),
+            child: child,
+          );
+        });
+
+    if (picked_s != null)
+      setState(() {
+        deliverytime = picked_s.toString();
+      });
+  }
 
   // final postUserotpdataModel = postUserotpdataModel(email:);
   @override
@@ -344,13 +421,51 @@ class _OtpPopUpState extends State<OtpPopUp> {
                                   SizedBox(
                                     height: 20,
                                   ),
-                                  TextField(
-                                    controller: datecontro,
-                                    decoration: InputDecoration(
-                                        border: OutlineInputBorder(),
-                                        labelText:
-                                            'Preferred delivery date and time',
-                                        hintText: 'DD-MM-YYYY,HH-MM'),
+                                  Container(
+                                    decoration: BoxDecoration(
+                                        border: Border.all(
+                                            color: Colors.blueAccent)),
+                                    child: Row(
+                                      children: [
+                                        Expanded(
+                                          flex: 5,
+                                          child: Padding(
+                                            padding: const EdgeInsets.only(
+                                                left: 8.0),
+                                            child: Text((deliverydate ==
+                                                        'Choose delivery date here'
+                                                    ? '${deliverydate}'
+                                                    : '${deliverydate}'
+                                                        .substring(0, 10)) +
+                                                (deliverytime ==
+                                                        ' and choose time'
+                                                    ? ', ${deliverytime}'
+                                                    : ', ${deliverytime}')),
+                                          ),
+                                        ),
+                                        Expanded(
+                                          flex: 1,
+                                          child: IconButton(
+                                            onPressed: () {
+                                              print('its  working');
+                                              _deliveryselectDate(context);
+                                            },
+                                            icon: Icon(Icons.date_range),
+                                          ),
+                                        ),
+                                        Expanded(
+                                          flex: 1,
+                                          child: IconButton(
+                                            onPressed: () {
+                                              print('its  working');
+                                              _selectTime(context);
+                                            },
+                                            icon:
+                                                Icon(Icons.access_time_rounded),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
                                   ),
                                 ],
                               ),
@@ -421,6 +536,7 @@ class _OtpPopUpState extends State<OtpPopUp> {
                         FlatButton(
                             color: Colors.blue,
                             onPressed: () {
+                              print(notp);
                               if (genarateOTP == true) {
                                 if (notp != otpcontro.text) {
                                   ScaffoldMessenger.of(this.context)
@@ -430,14 +546,14 @@ class _OtpPopUpState extends State<OtpPopUp> {
                                     content: Text('Please enter valid OTP'),
                                   ));
                                 } else if (notp == otpcontro.text) {
-                                  // print(widget.checkOutlist.length);
-                                  // showDialog(
-                                  //   barrierDismissible: false,
-                                  //   context: context,
-                                  //   builder: (_) => CheckOutDilog(
-                                  //     checkOutlist: widget.checkOutlist,
-                                  //   ),
-                                  // );
+                                  Navigator.pop(context);
+                                  showDialog(
+                                    barrierDismissible: false,
+                                    context: context,
+                                    builder: (_) => CheckOutDilog(
+                                      checkOutlist: widget.checkOutlist,
+                                    ),
+                                  );
                                 } else {
                                   ScaffoldMessenger.of(this.context)
                                       .showSnackBar(SnackBar(

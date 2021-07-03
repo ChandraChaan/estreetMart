@@ -35,6 +35,10 @@ dependencies:
   stripe_payment: ^1.0.7
   http:
   url_strategy: ^0.2.0
+  get:
+  dio: ^3.0.10
+  webview_flutter: ^1.0.0
+  js: ^0.6.2
 #  flutter_web_plugins: any
 
 dev_dependencies:

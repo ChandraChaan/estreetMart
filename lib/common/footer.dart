@@ -1,4 +1,6 @@
+import 'package:estreet/config/app_pages.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 class footer extends StatelessWidget {
   // final List _Linkchildren = <Widget>[
@@ -29,27 +31,34 @@ double bithight = 9;
                     children: [
                       TextButton(
                           onPressed: () {
-                            Navigator.pushNamed(context, '/terms_and_conditions');
+                            // Navigator.pushNamed(context, '/terms_and_conditions');
+                            Get.toNamed(Routes.terms_and_conditions);
                           },
                           child: Text('terms_and_conditions')),
                       TextButton(
                           onPressed: () {
-                            Navigator.pushNamed(context, '/privacy_policy');
+                            // Navigator.pushNamed(context, '/privacy_policy');
+                            Get.toNamed(Routes.privacy_policy);
+
                           },
                           child: Text('privacy_policy')),
                       TextButton(
                           onPressed: () {
-                            Navigator.pushNamed(context, '/shipping_policy');
+                            // Navigator.pushNamed(context, '/shipping_policy');
+                            Get.toNamed(Routes.shipping_policy);
+
                           },
                           child: Text('shipping_policy')),
                       TextButton(
                           onPressed: () {
-                            Navigator.pushNamed(context, '/refund_policy');
+                            // Navigator.pushNamed(context, '/refund_policy');
+                            Get.toNamed(Routes.refund_policy);
                           },
                           child: Text('refund_policy')),
                       TextButton(
                           onPressed: () {
-                            Navigator.pushNamed(context, '/information_security');
+                            // Navigator.pushNamed(context, '/information_security');
+                            Get.toNamed(Routes.information_security);
                           },
                           child: Text('information_security')),
                     ],
@@ -146,31 +155,38 @@ double bithight = 9;
                   SizedBox(height: bithight,),
                   TextButton(
                       onPressed: () {
-                        Navigator.pushNamed(context, '/terms_and_conditions');
+                        // Navigator.pushNamed(context, '/terms_and_conditions');
+                        Get.toNamed(Routes.terms_and_conditions);
+
                       },
                       child: Text('terms_and_conditions')),
                   SizedBox(height: bithight,),
                   TextButton(
                       onPressed: () {
-                        Navigator.pushNamed(context, '/privacy_policy');
+                        // Navigator.pushNamed(context, '/privacy_policy');
+                        Get.toNamed(Routes.privacy_policy);
                       },
                       child: Text('privacy_policy')),
                   SizedBox(height: bithight,),
                   TextButton(
                       onPressed: () {
-                        Navigator.pushNamed(context, '/shipping_policy');
+                        // Navigator.pushNamed(context, '/shipping_policy');
+                        Get.toNamed(Routes.shipping_policy);
                       },
                       child: Text('shipping_policy')),
                   SizedBox(height: bithight,),
                   TextButton(
                       onPressed: () {
-                        Navigator.pushNamed(context, '/refund_policy');
+                        // Navigator.pushNamed(context, '/refund_policy');
+                        Get.toNamed(Routes.refund_policy);
+
                       },
                       child: Text('refund_policy')),
                   SizedBox(height: bithight,),
                   TextButton(
                       onPressed: () {
-                        Navigator.pushNamed(context, '/information_security');
+                        // Navigator.pushNamed(context, '/information_security');
+                        Get.toNamed(Routes.information_security);
                       },
                       child: Text('information_security')),
                   SizedBox(height: bithight,),

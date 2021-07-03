@@ -1,4 +1,5 @@
 import 'dart:math';
+import 'package:estreet/checkout/stripe_checkout.dart';
 import 'package:estreet/network/models.dart';
 import 'package:estreet/network/network_file.dart';
 import 'package:estreet/payment/strip-payment-service.dart';
@@ -197,8 +198,9 @@ class _CheckOutDilogState extends State<CheckOutDilog> {
                                 child: TextButton(
                                     onPressed: () {
                                       print('proceed to pay');
-                                      payMentStrip().payViaNewCard(
-                                          context, "${total.toString()}");
+                                      redirectToCheckout(context);
+                                      // payMentStrip().payViaNewCard(
+                                      //     context, "${total.toString()}");
                                     },
                                     child: Text("Proceed to pay")),
                               ),
@@ -437,10 +439,12 @@ class _OtpPopUpState extends State<OtpPopUp> {
                                                     ? '${deliverydate}'
                                                     : '${deliverydate}'
                                                         .substring(0, 10)) +
+                                                ' ' +
                                                 (deliverytime ==
                                                         ' and choose time'
                                                     ? ', ${deliverytime}'
-                                                    : ', ${deliverytime}')),
+                                                    : ', ${deliverytime}'
+                                                        .substring(12, 17))),
                                           ),
                                         ),
                                         Expanded(
@@ -488,24 +492,44 @@ class _OtpPopUpState extends State<OtpPopUp> {
                                         )
                                       : FlatButton(
                                           onPressed: () {
-                                            int min =
-                                                1000; //min and max values act as your 6 digit range
-                                            int max = 9999;
-                                            var randomizer = new Random();
-                                            var rNum = min +
-                                                randomizer.nextInt(max - min);
-                                            HttpserviceC().postUserotpdata(
-                                              email: emailcontro.text,
-                                              phone: phonecontro.text,
-                                              name: namecontro.text,
-                                              details: datecontro.text,
-                                              address: addresscontro.text,
-                                              otp: rNum,
-                                            );
-                                            setState(() {
-                                              genarateOTP = true;
-                                              notp = rNum.toString();
-                                            });
+                                            if (emailcontro.text.isNotEmpty &&
+                                                deliverydate !=
+                                                    'Choose delivery date here' &&
+                                                deliverytime !=
+                                                    ' and choose time') {
+                                              int min =
+                                                  1000; //min and max values act as your 6 digit range
+                                              int max = 9999;
+                                              var randomizer = new Random();
+                                              var rNum = min +
+                                                  randomizer.nextInt(max - min);
+                                              HttpserviceC().postUserotpdata(
+                                                email: emailcontro.text,
+                                                phone: phonecontro.text,
+                                                name: namecontro.text,
+                                                details: deliverydate.substring(
+                                                        0, 10) +
+                                                    ' ' +
+                                                    deliverytime.substring(
+                                                        10, 15),
+                                                address: addresscontro.text,
+                                                otp: rNum,
+                                              );
+                                              setState(() {
+                                                genarateOTP = true;
+                                                notp = rNum.toString();
+                                              });
+                                              print(rNum.toString());
+                                            } else {
+                                              ScaffoldMessenger.of(this.context)
+                                                  .showSnackBar(SnackBar(
+                                                backgroundColor: Colors.red,
+                                                behavior:
+                                                    SnackBarBehavior.floating,
+                                                content: Text(
+                                                    'Please enter Email & Delivery Date'),
+                                              ));
+                                            }
                                             // print('this is otp ' + '${notp}');
                                           },
                                           child: Text('Verify email'),
@@ -526,7 +550,7 @@ class _OtpPopUpState extends State<OtpPopUp> {
                                     height: 20,
                                   ),
                                   Text(
-                                      'Note: except Saturday and Sunday, Delivery Starts after 48 hrs of Order Placed, Delivery Time between 9 AM to 9 PM'),
+                                      'Note: except Saturday and Sunday, Delivery Starts after 48 hrs of Order Placed, Delivery Time between 9 AM to 9 PM\n Please select date after 48hr for delivery'),
                                 ],
                               ),
                               // child: Text(info.toString()),
@@ -578,6 +602,19 @@ class _OtpPopUpState extends State<OtpPopUp> {
                 ),
               ],
             )),
+      ),
+    );
+  }
+}
+class SuccessPage extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: Center(
+        child: Text(
+          'Success',
+          style: Theme.of(context).textTheme.headline1,
+        ),
       ),
     );
   }

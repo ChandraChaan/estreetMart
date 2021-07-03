@@ -55,7 +55,7 @@ class _cardItemsState extends State<cardItems> {
     var size = MediaQuery.of(context).size;
     final double cardHeight = 570;
     return Padding(
-      padding: size.width < 850
+      padding: size.width < 1000
           ? const EdgeInsets.all(3)
           : const EdgeInsets.only(left: 75, right: 75, top: 50, bottom: 50),
       child: Container(
@@ -85,9 +85,9 @@ class _cardItemsState extends State<cardItems> {
                     ? Center(child: CircularProgressIndicator())
                     : i == 1
                         ? GridView.count(
-                            crossAxisCount: size.width < 850 ? 1 : 3,
+                            crossAxisCount: size.width < 1000 ? 2 : 4,
                             childAspectRatio: 1.2,
-                            padding: size.width < 850
+                            padding: size.width < 1000
                                 ? const EdgeInsets.all(10)
                                 : const EdgeInsets.all(20),
                             mainAxisSpacing: 30.0,
@@ -109,7 +109,7 @@ class _cardItemsState extends State<cardItems> {
                                           MainAxisAlignment.spaceAround,
                                       children: [
                                         Expanded(
-                                          flex: 2,
+                                          flex: 3,
                                           child: Padding(
                                             padding: const EdgeInsets.only(
                                               top: 14,

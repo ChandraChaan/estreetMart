@@ -6,11 +6,11 @@ class footer extends StatelessWidget {
   // final List _Linkchildren = <Widget>[
   //   TextButton(onPressed: () {
   //     Navigator.pushNamed(context, '/privacy_policy');
-  //   }, child: Text('terms_and_conditions')),
-  //   TextButton(onPressed: () {}, child: Text('privacy_policy')),
-  //   TextButton(onPressed: () {}, child: Text('shipping_policy')),
-  //   TextButton(onPressed: () {}, child: Text('refund_policy')),
-  //   TextButton(onPressed: () {}, child: Text('information_security')),
+  //   }, child: Text('Terms and conditions')),
+  //   TextButton(onPressed: () {}, child: Text('Privacy policy')),
+  //   TextButton(onPressed: () {}, child: Text('Shipping policy')),
+  //   TextButton(onPressed: () {}, child: Text('Refund policy')),
+  //   TextButton(onPressed: () {}, child: Text('Information security')),
   // ];
 double bithight = 9;
   @override
@@ -34,33 +34,33 @@ double bithight = 9;
                             // Navigator.pushNamed(context, '/terms_and_conditions');
                             Get.toNamed(Routes.terms_and_conditions);
                           },
-                          child: Text('terms_and_conditions')),
+                          child: Text('Terms and conditions')),
                       TextButton(
                           onPressed: () {
                             // Navigator.pushNamed(context, '/privacy_policy');
                             Get.toNamed(Routes.privacy_policy);
 
                           },
-                          child: Text('privacy_policy')),
+                          child: Text('Privacy policy')),
                       TextButton(
                           onPressed: () {
                             // Navigator.pushNamed(context, '/shipping_policy');
                             Get.toNamed(Routes.shipping_policy);
 
                           },
-                          child: Text('shipping_policy')),
+                          child: Text('Shipping policy')),
                       TextButton(
                           onPressed: () {
                             // Navigator.pushNamed(context, '/refund_policy');
                             Get.toNamed(Routes.refund_policy);
                           },
-                          child: Text('refund_policy')),
+                          child: Text('Refund policy')),
                       TextButton(
                           onPressed: () {
                             // Navigator.pushNamed(context, '/information_security');
                             Get.toNamed(Routes.information_security);
                           },
-                          child: Text('information_security')),
+                          child: Text('Information security')),
                     ],
                   ),
                   SizedBox(
@@ -159,21 +159,21 @@ double bithight = 9;
                         Get.toNamed(Routes.terms_and_conditions);
 
                       },
-                      child: Text('terms_and_conditions')),
+                      child: Text('Terms and conditions')),
                   SizedBox(height: bithight,),
                   TextButton(
                       onPressed: () {
                         // Navigator.pushNamed(context, '/privacy_policy');
                         Get.toNamed(Routes.privacy_policy);
                       },
-                      child: Text('privacy_policy')),
+                      child: Text('Privacy policy')),
                   SizedBox(height: bithight,),
                   TextButton(
                       onPressed: () {
                         // Navigator.pushNamed(context, '/shipping_policy');
                         Get.toNamed(Routes.shipping_policy);
                       },
-                      child: Text('shipping_policy')),
+                      child: Text('Shipping policy')),
                   SizedBox(height: bithight,),
                   TextButton(
                       onPressed: () {
@@ -181,14 +181,14 @@ double bithight = 9;
                         Get.toNamed(Routes.refund_policy);
 
                       },
-                      child: Text('refund_policy')),
+                      child: Text('Refund policy')),
                   SizedBox(height: bithight,),
                   TextButton(
                       onPressed: () {
                         // Navigator.pushNamed(context, '/information_security');
                         Get.toNamed(Routes.information_security);
                       },
-                      child: Text('information_security')),
+                      child: Text('Information security')),
                   SizedBox(height: bithight,),
                   Container(
                     // width: 54,

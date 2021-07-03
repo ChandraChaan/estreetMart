@@ -338,7 +338,7 @@ class _OtpPopUpState extends State<OtpPopUp> {
 
     if (picked_s != null)
       setState(() {
-        deliverytime = picked_s.toString();
+        deliverytime = picked_s.hour.toString()+':'+picked_s.minute.toString();
       });
   }
 
@@ -371,6 +371,232 @@ class _OtpPopUpState extends State<OtpPopUp> {
                 SizedBox(
                   height: 10,
                 ),
+                (MediaQuery.of(context).size.width<800)?Container(
+                  decoration: BoxDecoration(
+                      color: Colors.white,
+                      border: Border.all(
+                        color: Colors.blue,
+                      ),
+                      borderRadius: BorderRadius.all(Radius.circular(20))),
+                  // color: Colors.white,
+                  width: MediaQuery.of(context).size.width / 1.5,
+                  height: MediaQuery.of(context).size.height / 1.3,
+                  child: Padding(
+                    padding: const EdgeInsets.all(16.0),
+                    child: SingleChildScrollView(
+                      scrollDirection: Axis.vertical,
+                      physics: BouncingScrollPhysics(),
+                      child: Column(
+                        children: [
+                          Column(
+                            children: [
+                              Text("Please Verify and proceed to Checkout",style: TextStyle(color: Colors.red),),
+                              SizedBox(
+                                height: 30,
+                              ),
+                              TextField(
+                                controller: emailcontro,
+                                decoration: InputDecoration(
+                                    border: OutlineInputBorder(),
+                                    labelText: 'Email',
+                                    hintText: 'Sample@gmail.com'),
+                              ),
+                              SizedBox(
+                                height: 20,
+                              ),
+                              TextField(
+                                controller: phonecontro,
+                                decoration: InputDecoration(
+                                    border: OutlineInputBorder(),
+                                    labelText: 'Phone',
+                                    hintText: '123456'),
+                              ),
+                              SizedBox(
+                                height: 20,
+                              ),
+                              TextField(
+                                controller: namecontro,
+                                decoration: InputDecoration(
+                                    border: OutlineInputBorder(),
+                                    labelText: 'Name',
+                                    hintText: 'ABCD'),
+                              ),
+                              SizedBox(
+                                height: 20,
+                              ),
+                              Container(
+                                decoration: BoxDecoration(
+                                    border: Border.all(
+                                        color: Colors.blueAccent)),
+                                child: Row(
+                                  children: [
+                                    Expanded(
+                                      flex: 5,
+                                      child: Padding(
+                                        padding: const EdgeInsets.only(
+                                            left: 8.0),
+                                        child: Text((deliverydate ==
+                                            'Choose delivery date here'
+                                            ? '${deliverydate}'
+                                            : '${deliverydate}'
+                                            .substring(0, 10)) +
+                                            ' ' +
+                                            (deliverytime ==
+                                                ' and choose time'
+                                                ? ', ${deliverytime}'
+                                                : ', ${deliverytime}')),
+                                      ),
+                                    ),
+                                    Expanded(
+                                      flex: 1,
+                                      child: IconButton(
+                                        onPressed: () {
+                                          print('its  working');
+                                          _deliveryselectDate(context);
+                                        },
+                                        icon: Icon(Icons.date_range),
+                                      ),
+                                    ),
+                                    Expanded(
+                                      flex: 1,
+                                      child: IconButton(
+                                        onPressed: () {
+                                          print('its  working');
+                                          _selectTime(context);
+                                        },
+                                        icon:
+                                        Icon(Icons.access_time_rounded),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              SizedBox(
+                                height: 20,
+                              ),
+                              Container(),
+                              Column(
+                                // mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                children: [
+                                  genarateOTP == true
+                                      ? TextField(
+                                    controller: otpcontro,
+                                    decoration: InputDecoration(
+                                      // labelText: 'Email',
+                                        hintText: 'OTP'),
+                                  )
+                                      : FlatButton(
+                                    onPressed: () {
+                                      if (emailcontro.text.isNotEmpty &&
+                                          deliverydate !=
+                                              'Choose delivery date here' &&
+                                          deliverytime !=
+                                              ' and choose time') {
+                                        int min =
+                                        1000; //min and max values act as your 6 digit range
+                                        int max = 9999;
+                                        var randomizer = new Random();
+                                        var rNum = min +
+                                            randomizer.nextInt(max - min);
+                                        HttpserviceC().postUserotpdata(
+                                          email: emailcontro.text,
+                                          phone: phonecontro.text,
+                                          name: namecontro.text,
+                                          details: deliverydate.substring(
+                                              0, 10) +
+                                              ' ' +
+                                              deliverytime,
+                                          address: addresscontro.text,
+                                          otp: rNum,
+                                        );
+                                        setState(() {
+                                          genarateOTP = true;
+                                          notp = rNum.toString();
+                                        });
+                                        print(rNum.toString());
+                                      } else {
+                                        ScaffoldMessenger.of(this.context)
+                                            .showSnackBar(SnackBar(
+                                          backgroundColor: Colors.red,
+                                          behavior:
+                                          SnackBarBehavior.floating,
+                                          content: Text(
+                                              'Please enter Email & Delivery Date'),
+                                        ));
+                                      }
+                                      // print('this is otp ' + '${notp}');
+                                    },
+                                    child: Text('Verify email'),
+                                    color: Colors.blue,
+                                  ),
+                                  SizedBox(
+                                    height: 20,
+                                  ),
+                                  TextField(
+                                    controller: addresscontro,
+                                    maxLines: 5,
+                                    decoration: InputDecoration(
+                                        border: OutlineInputBorder(),
+                                        labelText: 'Address',
+                                        hintText: 'Address'),
+                                  ),
+                                  SizedBox(
+                                    height: 20,
+                                  ),
+                                  Text(
+                                      'Note: except Saturday and Sunday, Delivery Starts after 48 hrs of Order Placed, Delivery Time between 9 AM to 9 PM\n Please select date after 48hr for delivery'),
+                                ],
+                              ),
+                            ],
+                          ),
+                          SizedBox(
+                            height: 20,
+                          ),
+                          FlatButton(
+                              color: Colors.blue,
+                              onPressed: () {
+                                print(MediaQuery.of(context).size.width );
+                                print(notp);
+                                if (genarateOTP == true) {
+                                  if (notp != otpcontro.text) {
+                                    ScaffoldMessenger.of(this.context)
+                                        .showSnackBar(SnackBar(
+                                      backgroundColor: Colors.red,
+                                      behavior: SnackBarBehavior.floating,
+                                      content: Text('Please enter valid OTP'),
+                                    ));
+                                  } else if (notp == otpcontro.text) {
+                                    Navigator.pop(context);
+                                    showDialog(
+                                      barrierDismissible: false,
+                                      context: context,
+                                      builder: (_) => CheckOutDilog(
+                                        checkOutlist: widget.checkOutlist,
+                                      ),
+                                    );
+                                  } else {
+                                    ScaffoldMessenger.of(this.context)
+                                        .showSnackBar(SnackBar(
+                                      backgroundColor: Colors.red,
+                                      behavior: SnackBarBehavior.floating,
+                                      content: Text('Please enter OTP'),
+                                    ));
+                                  }
+                                } else {
+                                  ScaffoldMessenger.of(this.context)
+                                      .showSnackBar(SnackBar(
+                                    backgroundColor: Colors.red,
+                                    behavior: SnackBarBehavior.floating,
+                                    content: Text('Please verify you mail'),
+                                  ));
+                                }
+                              },
+                              child: Text('Checkout'))
+                        ],
+                      ),
+                    ),
+                  ),
+                ):
                 Container(
                   decoration: BoxDecoration(
                       color: Colors.white,
@@ -443,8 +669,7 @@ class _OtpPopUpState extends State<OtpPopUp> {
                                                 (deliverytime ==
                                                         ' and choose time'
                                                     ? ', ${deliverytime}'
-                                                    : ', ${deliverytime}'
-                                                        .substring(12, 17))),
+                                                    : ', ${deliverytime}')),
                                           ),
                                         ),
                                         Expanded(
@@ -510,8 +735,7 @@ class _OtpPopUpState extends State<OtpPopUp> {
                                                 details: deliverydate.substring(
                                                         0, 10) +
                                                     ' ' +
-                                                    deliverytime.substring(
-                                                        10, 15),
+                                                    deliverytime,
                                                 address: addresscontro.text,
                                                 otp: rNum,
                                               );

@@ -15,16 +15,6 @@ class MyApp extends StatelessWidget {
       ),
       getPages: AppPages.routes,
       initialRoute: AppPages.INITIAL,
-      // initialRoute: '/',
-      // onGenerateRoute: RouteGenerator.generateRoute,
-      // routes: {
-      //   '/': (context) => HomeScreen(),
-      //   '/privacy_policy': (context) => privacyPolicy(),
-      //   '/terms_and_conditions': (context) => termsAndConditions(),
-      //   '/shipping_policy': (context) => shippingPolicy(),
-      //   '/refund_policy': (context) => refundPolicy(),
-      //   '/information_security': (context) => informationSecurity(),
-      // },
     );
   }
 }

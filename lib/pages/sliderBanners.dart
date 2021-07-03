@@ -58,7 +58,7 @@ int i;
 
         //Slider Container properties
         options: CarouselOptions(
-          height: 320.0,
+          height: MediaQuery.of(context).size.width > 900 ? 370.0 : 120,
           enlargeCenterPage: true,
           autoPlay: true,
           aspectRatio: 16 / 9,

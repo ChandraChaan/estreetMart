@@ -22,8 +22,8 @@ class StripeService {
   static init() {
     StripePayment.setOptions(StripeOptions(
         publishableKey: "pk_live_UlbcdIl0oF3a7NoCDFudx4p900mQ5kGzvS",
-        merchantId: "live",
-        androidPayMode: 'live'));
+        merchantId: "test",
+        androidPayMode: 'test'));
   }
 
   static Future<StripeTransactionResponse> payViaExistingCard(
